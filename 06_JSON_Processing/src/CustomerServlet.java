@@ -25,7 +25,7 @@ import java.sql.SQLException;
 public class CustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        resp.setContentType("application/json");
         /*try {
             Connection connection = DbConnection.getInstance().getConnection();
             ResultSet resultSet = connection.prepareStatement("select * from Customer").executeQuery();
@@ -56,7 +56,9 @@ public class CustomerServlet extends HttpServlet {
         try {
             Connection connection = DbConnection.getInstance().getConnection();
             ResultSet resultSet = connection.prepareStatement("select * from Customer").executeQuery();
+
             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+            JsonObjectBuilder objBuilder = Json.createObjectBuilder();
 
             while (resultSet.next()) {
 
@@ -72,8 +74,13 @@ public class CustomerServlet extends HttpServlet {
                 arrayBuilder.add(objectBuilder.build());
             }
 
+            objBuilder.add("data",arrayBuilder.build());
+            objBuilder.add("massage","Done");
+            objBuilder.add("status","200");
+
+
             PrintWriter writer = resp.getWriter();
-            writer.print(arrayBuilder.build());
+            writer.print(objBuilder.build());
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
