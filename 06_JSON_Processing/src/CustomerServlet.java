@@ -119,24 +119,23 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String cusId = req.getParameter("customerID");
-//        String cusId = req.getHeader("customerID");
-//        String cusId = req.getQueryString().split("=")[1];    // This also works
-//        String cusId = queryString.split("=")[1];
-//        System.out.println(queryString);
+        resp.setContentType("application/json");
+        JsonObjectBuilder objBuilder = Json.createObjectBuilder();
+        PrintWriter writer = resp.getWriter();
+
         System.out.println(cusId);
 
         try {
             boolean b = DbConnection.getInstance().getConnection().prepareStatement("DELETE FROM customer WHERE id='" + cusId + "'").executeUpdate() > 0;
-//            boolean b = DbConnection.getInstance().getConnection().prepareStatement("DELETE FROM customer WHERE id='C006'").executeUpdate() > 0;
 
             if (b) {
-                PrintWriter writer = resp.getWriter();
-                writer.write(String.valueOf(b));
-                writer.write("\nCustomer Deleted");
+                objBuilder.add("data","");
+                objBuilder.add("massage","Successfully Deleted");
+                objBuilder.add("status","200");
+                writer.print(objBuilder.build());
+
             } else {
-                PrintWriter writer = resp.getWriter();
-                writer.write(String.valueOf(b));
-                writer.write("\nCustomer not Deleted");
+                writer.write("Customer not Deleted");
             }
 
         } catch (ClassNotFoundException e) {
