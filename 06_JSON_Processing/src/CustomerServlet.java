@@ -1,5 +1,8 @@
 import db.DbConnection;
 
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +25,8 @@ import java.sql.SQLException;
 public class CustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
+
+        /*try {
             Connection connection = DbConnection.getInstance().getConnection();
             ResultSet resultSet = connection.prepareStatement("select * from Customer").executeQuery();
             String allRecodes = "";
@@ -42,6 +46,34 @@ public class CustomerServlet extends HttpServlet {
             writer.write(finalJson);
 
             System.out.println(finalJson);
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }*/
+
+        try {
+            Connection connection = DbConnection.getInstance().getConnection();
+            ResultSet resultSet = connection.prepareStatement("select * from Customer").executeQuery();
+            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+
+            while (resultSet.next()) {
+
+                String id = resultSet.getString(1);
+                String name = resultSet.getString(2);
+                String address = resultSet.getString(3);
+
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                objectBuilder.add("id", id);
+                objectBuilder.add("name", name);
+                objectBuilder.add("address", address);
+
+                arrayBuilder.add(objectBuilder.build());
+            }
+
+            PrintWriter writer = resp.getWriter();
+            writer.print(arrayBuilder.build());
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
