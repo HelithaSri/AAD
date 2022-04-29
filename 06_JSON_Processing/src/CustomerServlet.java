@@ -92,6 +92,7 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
+        PrintWriter writer = resp.getWriter();
         System.out.println("hey");
         String customerID = req.getParameter("customerID");
         String customerName = req.getParameter("customerName");
@@ -112,14 +113,27 @@ public class CustomerServlet extends HttpServlet {
                 objBuilder.add("massage","Customer Added");
                 objBuilder.add("status","200");
 
-                PrintWriter writer = resp.getWriter();
+
                 writer.print(objBuilder.build());
             }
 
 
         } catch (ClassNotFoundException e) {
+            JsonObjectBuilder objBuilder = Json.createObjectBuilder();
+            objBuilder.add("data",e.getLocalizedMessage());
+            objBuilder.add("massage","Error");
+            objBuilder.add("status","500");
+
+            writer.print(objBuilder.build());
             e.printStackTrace();
         } catch (SQLException e) {
+            JsonObjectBuilder objBuilder = Json.createObjectBuilder();
+            objBuilder.add("data",e.getLocalizedMessage());
+            objBuilder.add("massage","Error");
+            objBuilder.add("status","500");
+
+            writer.print(objBuilder.build());
+            e.printStackTrace();
             e.printStackTrace();
         }
 
