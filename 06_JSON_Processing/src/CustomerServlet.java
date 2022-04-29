@@ -91,6 +91,7 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
         System.out.println("hey");
         String customerID = req.getParameter("customerID");
         String customerName = req.getParameter("customerName");
@@ -104,9 +105,17 @@ public class CustomerServlet extends HttpServlet {
             pstm.setObject(1, customerID);
             pstm.setObject(2, customerName);
             pstm.setObject(3, customerAddress);
-            boolean b = pstm.executeUpdate() > 0;
-            PrintWriter writer = resp.getWriter();
-            writer.write("Customer Added");
+//            boolean b = pstm.executeUpdate() > 0;
+            if(pstm.executeUpdate() > 0){
+                JsonObjectBuilder objBuilder = Json.createObjectBuilder();
+                objBuilder.add("data","");
+                objBuilder.add("massage","Customer Added");
+                objBuilder.add("status","200");
+
+                PrintWriter writer = resp.getWriter();
+                writer.print(objBuilder.build());
+            }
+
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

@@ -139,7 +139,8 @@
     });
 
     $("#saveCustomer").click(function () {
-        console.log($("#cForm").serialize())
+        console.log($("#cForm").serialize());
+        console.log(JSON.stringify($("#cForm").serialize()));
         $.ajax({
             url: "customer",
             method: "POST",
