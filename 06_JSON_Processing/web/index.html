@@ -147,7 +147,13 @@
             data: $("#cForm").serialize(),
             success: function (resp) {
                 $("#btn3")[0].click();
-                console.log(resp);
+                alert(resp.massage);
+                /*for (const customer of resp){
+                    console.log(customer);
+                }*/
+            },
+            error: function (ob, textStatus, error){
+                alert(ob.responseJSON.massage)
             }
         });
     });

@@ -107,33 +107,36 @@ public class CustomerServlet extends HttpServlet {
             pstm.setObject(2, customerName);
             pstm.setObject(3, customerAddress);
 //            boolean b = pstm.executeUpdate() > 0;
+
             if(pstm.executeUpdate() > 0){
+                resp.setStatus(HttpServletResponse.SC_CREATED);
                 JsonObjectBuilder objBuilder = Json.createObjectBuilder();
                 objBuilder.add("data","");
-                objBuilder.add("massage","Customer Added");
-                objBuilder.add("status","200");
-
-
+                objBuilder.add("massage","Customer Successfully Added");
+                objBuilder.add("status","201");
                 writer.print(objBuilder.build());
             }
 
 
         } catch (ClassNotFoundException e) {
             JsonObjectBuilder objBuilder = Json.createObjectBuilder();
+//            resp.setStatus(400);
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             objBuilder.add("data",e.getLocalizedMessage());
-            objBuilder.add("massage","Error");
+            objBuilder.add("massage","Error : "+e.getLocalizedMessage());
             objBuilder.add("status","500");
 
             writer.print(objBuilder.build());
             e.printStackTrace();
         } catch (SQLException e) {
             JsonObjectBuilder objBuilder = Json.createObjectBuilder();
+//            resp.setStatus(400); // Same as 'resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);'
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             objBuilder.add("data",e.getLocalizedMessage());
-            objBuilder.add("massage","Error");
+            objBuilder.add("massage","Error : "+e.getLocalizedMessage());
             objBuilder.add("status","500");
 
             writer.print(objBuilder.build());
-            e.printStackTrace();
             e.printStackTrace();
         }
 
@@ -184,9 +187,11 @@ public class CustomerServlet extends HttpServlet {
 
             boolean b = pstm.executeUpdate() > 0;
             if (b) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 PrintWriter writer = resp.getWriter();
                 writer.write("Customer Updated");
             } else {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 PrintWriter writer = resp.getWriter();
                 writer.write("Customer Not Updated");
             }
