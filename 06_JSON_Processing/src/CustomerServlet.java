@@ -101,6 +101,7 @@ public class CustomerServlet extends HttpServlet {
         System.out.println(customerID + "\t" + customerName + "\t" + customerAddress);
         System.out.println("Post : " + customerID);
 
+
         try {
             PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement("INSERT INTO customer VALUES (?,?,?)");
             pstm.setObject(1, customerID);

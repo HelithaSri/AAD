@@ -148,12 +148,9 @@
             success: function (resp) {
                 $("#btn3")[0].click();
                 alert(resp.massage);
-                /*for (const customer of resp){
-                    console.log(customer);
-                }*/
             },
             error: function (ob, textStatus, error){
-                alert(ob.responseJSON.massage)
+                alert(ob.responseJSON.massage);
             }
         });
     });
