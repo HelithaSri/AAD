@@ -114,7 +114,7 @@
     $("#updateCustomer").click(function () {
         // var valueget = $("#cusID").val();
         $.ajax({
-            url: "customer?"+$("#cForm").serialize(),
+            url: "http://localhost:8080/filter/customer?"+$("#cForm").serialize(),
             method: "PUT",
             // data: $("#cForm").serialize(),
             success: function (resp) {
@@ -127,7 +127,7 @@
     $("#deleteCustomer").click(function () {
         var valueget = $("#cusID").val();
         $.ajax({
-            url: `customer?customerID=${valueget}`,
+            url: `http://localhost:8080/filter/customer?customerID=${valueget}`,
             method: "DELETE",
             // headers:{"customerID":$("#cusID").val()},
             success: function (resp) {
@@ -141,7 +141,7 @@
     $("#saveCustomer").click(function () {
         console.log($("#cForm").serialize())
         $.ajax({
-            url: "customer",
+            url: "http://localhost:8080/filter/customer",
             method: "POST",
             data: $("#cForm").serialize(),
             success: function (resp) {
