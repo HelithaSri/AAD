@@ -34,6 +34,7 @@ public class ItemServelet extends HttpServlet {
                 String id = rst.getString(1);
                 System.out.println(id);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

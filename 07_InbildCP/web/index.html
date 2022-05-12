@@ -1,0 +1,173 @@
+<!--/**
+* @author : Sanu Vithanage
+* @since : 0.1.0
+**/-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AJAX with jQuery</title>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<section class="container-fluid p-4 bg-primary text-white">
+    <h1 class="fw-bold">AJAX With jQuerys</h1>
+</section>
+<section class="container mt-3">
+    <!--    customer save-->
+    <div class="row mt-3">
+        <div class="col-5">
+            <form id="cForm">
+                <div class="mb-3">
+                    <label for="cusID" class="form-label">Customer ID</label>
+                    <input type="text" class="form-control" id="cusID" placeholder="Customer ID" name="customerID">
+                </div>
+                <div class="mb-3">
+                    <label for="cusName" class="form-label">Customer Name</label>
+                    <input type="text" class="form-control" id="cusName" placeholder="Customer Name"
+                           name="customerName">
+                </div>
+                <div class="mb-3">
+                    <label for="cusAddress" class="form-label">Customer Address</label>
+                    <input type="text" class="form-control" id="cusAddress" placeholder="Customer Address"
+                           name="customerAddress">
+                </div>
+                <!--<div class="mb-3">
+                    <label for="cusSalary" class="form-label">Customer Salary</label>
+                    <input type="text" class="form-control" id="cusSalary" placeholder="Customer Salary" name="customerSlary">
+                </div>-->
+                <div class="mb-3">
+                    <button type="button" id="saveCustomer" class="btn btn-primary">Save Customer</button>
+                    <button type="button" id="deleteCustomer" class="btn btn-danger">Delete Customer</button>
+                    <button type="button" id="updateCustomer" class="btn btn-success">Update Customer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--File Type : JSON-->
+    <div class="row mt-3">
+        <div class="col-2">
+            <button class="btn btn-warning" id="btn3">Send Request To JSON</button>
+        </div>
+        <div class="col">
+            <table class="table table-bordered table-hover">
+                <thead class="bg-danger text-white">
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <!--                    <th>Salary</th>-->
+                </tr>
+                </thead>
+                <tbody id="tblCustomerJson">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <!--                    <td></td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+
+
+<script src="assets/jQuery/jquery-3.6.0.min.js"></script>
+<script>
+    var valueget = $("#cusID").val();
+    // var valueget = "id="+ $("#cusID").val();
+    // var q={"cusID":$("#cusID").val()};
+    // console.log($("#cForm").serialize())
+    // data: "id="+ $("#cusID").val(),
+    // data: $("#cForm").serialize(),
+
+    /*$("#deleteCustomer").click(function (){
+        $.ajax({
+            url: "customer",
+            method:"DELETE",
+            headers:{"customerID":$("#cusID").val()},
+            success: function (resp) {
+                $("#btn3")[0].click();
+                console.log(resp);
+
+            }
+        });
+    });*/
+
+    function bindClickEvents(){
+        $("#tblCustomerJson>tr").click(function (){
+            //Get values from the selected row
+            let id=$(this).children().eq(0).text();
+            let name=$(this).children().eq(1).text();
+            let address=$(this).children().eq(2).text();
+
+            //Set values to the text-fields
+            $("#cusID").val(id);
+            $("#cusName").val(name);
+            $("#cusAddress").val(address);
+        });
+    }
+
+    $("#updateCustomer").click(function () {
+        // var valueget = $("#cusID").val();
+        $.ajax({
+            url: "customer?"+$("#cForm").serialize(),
+            method: "PUT",
+            // data: $("#cForm").serialize(),
+            success: function (resp) {
+                $("#btn3")[0].click();
+                console.log(resp);
+            }
+        });
+    });
+
+    $("#deleteCustomer").click(function () {
+        var valueget = $("#cusID").val();
+        $.ajax({
+            url: `customer?customerID=${valueget}`,
+            method: "DELETE",
+            // headers:{"customerID":$("#cusID").val()},
+            success: function (resp) {
+                $("#btn3")[0].click();
+                console.log(resp);
+            }
+
+        });
+    });
+
+    $("#saveCustomer").click(function () {
+        console.log($("#cForm").serialize())
+        $.ajax({
+            url: "customer",
+            method: "POST",
+            data: $("#cForm").serialize(),
+            success: function (resp) {
+                $("#btn3")[0].click();
+                console.log(resp);
+            }
+        });
+    });
+
+    $("#btn3").click(function () {
+        $("#tblCustomerJson").empty();
+        $.ajax({
+            url: "customer",
+            method: "GET",
+            dataType: "json", // please convert the response into JSON
+            success: function (resp) {
+                console.log(resp);
+                for (const customer of resp) {
+                    let row = `<tr><td>${customer.id}</td><td>${customer.name}</td><td>${customer.address}</td></tr>`;
+                    $("#tblCustomerJson").append(row);
+                }
+                bindClickEvents();
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

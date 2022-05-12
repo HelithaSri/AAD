@@ -48,6 +48,7 @@ public class CustomerServlet extends HttpServlet {
                 String id = rst.getString(1);
                 System.out.println(id);
             }
+            connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,6 +68,7 @@ public class CustomerServlet extends HttpServlet {
                 String id = rst.getString(1);
                 System.out.println(id);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
