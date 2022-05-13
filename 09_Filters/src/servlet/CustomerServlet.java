@@ -28,7 +28,7 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            resp.addHeader("Access-Control-Allow-Origin","*");
+//            resp.addHeader("Access-Control-Allow-Origin","*");
         try {
             Connection connection = dataSource.getConnection();
             ResultSet resultSet = connection.prepareStatement("select * from Customer").executeQuery();
@@ -58,7 +58,7 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("hey");
-        resp.addHeader("Access-Control-Allow-Origin","*");
+//        resp.addHeader("Access-Control-Allow-Origin","*");
 
         String customerID = req.getParameter("customerID");
         String customerName = req.getParameter("customerName");
@@ -87,7 +87,7 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.addHeader("Access-Control-Allow-Origin","*");
+//        resp.addHeader("Access-Control-Allow-Origin","*");
         String cusId = req.getParameter("customerID");
 //        String cusId = req.getHeader("customerID");
 //        String cusId = req.getQueryString().split("=")[1];    // This also works
@@ -123,7 +123,7 @@ public class CustomerServlet extends HttpServlet {
         String customerAddress = req.getParameter("customerAddress");
         System.out.println(customerID);
 
-        resp.addHeader("Access-Control-Allow-Origin","*");
+//        resp.addHeader("Access-Control-Allow-Origin","*");
 
         try {
             Connection connection = dataSource.getConnection();
@@ -149,10 +149,10 @@ public class CustomerServlet extends HttpServlet {
         }
     }
 
-    @Override
+   /* @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Access-Control-Allow-Origin","*");
         resp.addHeader("Access-Control-Allow-Methods","DELETE, PUT");
 //        resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
-    }
+    }*/
 }
